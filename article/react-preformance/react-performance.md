@@ -340,23 +340,23 @@ Although React encourages component composition and reusability, sometimes compo
 
 Consider the following example:
 
-`````jsx
+```jsx
 const App = () => {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   const increment = () => {
-    setCount(count => count + 1)
-  }
+    setCount((count) => count + 1);
+  };
 
   return (
     <div>
       <ComponentsContainer count={count} increment={increment} />
       <Chart count={count} />
     </div>
-  )
-}
+  );
+};
 
-const ComponentsContainer = ({count, increment}) => {
+const ComponentsContainer = ({ count, increment }) => {
   return (
     <div>
       <p>ComponentContainer</p>
@@ -375,7 +375,7 @@ const ChildComponent = () => {
   );
 };
 
-const Counter = ({counter, increment}) => {
+const Counter = ({ counter, increment }) => {
   return (
     <div>
       <p>Count: {count}</p>
@@ -384,15 +384,16 @@ const Counter = ({counter, increment}) => {
   );
 };
 ```
+
 We can make this better by doing:
 
-````jsx
+```jsx
 const App = () => {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   const increment = () => {
-    setCount(count => count + 1)
-  }
+    setCount((count) => count + 1);
+  };
 
   return (
     <div>
@@ -401,10 +402,10 @@ const App = () => {
       </ComponentsContainer>
       <Chart count={count} />
     </div>
-  )
-}
+  );
+};
 
-const ComponentsContainer = ({children}) => {
+const ComponentsContainer = ({ children }) => {
   return (
     <div>
       <p>ComponentContainer</p>
@@ -423,7 +424,7 @@ const ChildComponent = () => {
   );
 };
 
-const Counter = ({counter, increment}) => {
+const Counter = ({ counter, increment }) => {
   return (
     <div>
       <p>Count: {count}</p>
@@ -432,27 +433,25 @@ const Counter = ({counter, increment}) => {
   );
 };
 ```
+
 In this updated example, the static content is rendered once in the ParentComponent, eliminating unnecessary re-renders in the ChildComponent.
 
 ### Shallow comparing <a name="s4-3"></a>
 
 Shallow comparing is a technique used to optimize React components by avoiding deep comparisons of props and state. Instead of performing deep equality checks, shallow comparing compares the references of objects or primitive values. This optimization can significantly reduce the overhead of comparisons, especially for large objects or arrays.
 
-The following example, show shallow comparing with the *React.memo* HOC:
+The following example, show shallow comparing with the _React.memo_ HOC:
 
 ```jsx
-  const DisneyCharacter = React.memo(({ data }) => {
-    // Perform shallow comparing on data object properties
-    // ...
+const DisneyCharacter = React.memo(({ data }) => {
+  // Perform shallow comparing on data object properties
+  // ...
 
-    return (
-      <div>
-        {/* Render component */}
-      </div>
-    );
-  });
+  return <div>{/* Render component */}</div>;
+});
 ```
-In this example, the *DisneyCharacter* component can perform shallow comparing on the properties of the *data* object to determine if a re-render is necessary. By avoiding deep equality checks, the component can improve performance.
+
+In this example, the _DisneyCharacter_ component can perform shallow comparing on the properties of the _data_ object to determine if a re-render is necessary. By avoiding deep equality checks, the component can improve performance.
 
 ### Memoization Hooks <a name="s4-4"></a>
 
@@ -463,19 +462,15 @@ Memoization hooks, such as **useMemo** and **useCallback**, are powerful tools f
 The **useMemo** hook memoizes the result of a computation and returns the cached value on subsequent renders. It takes a dependency array as the second argument to determine when to recalculate the memoized value. Here's an example:
 
 ```jsx
-  const ExpensiveComponent = () => {
-    const expensiveResult = useMemo(() => {
-      // Expensive computation
-      // ...
-      return result;
-    }, [dep1, dep2]);
+const ExpensiveComponent = () => {
+  const expensiveResult = useMemo(() => {
+    // Expensive computation
+    // ...
+    return result;
+  }, [dep1, dep2]);
 
-    return (
-      <div>
-        {/* Render component */}
-      </div>
-    );
-  };
+  return <div>{/* Render component */}</div>;
+};
 ```
 
 2. **useCallback** <a name="s4-4-2"></a>
@@ -483,15 +478,13 @@ The **useMemo** hook memoizes the result of a computation and returns the cached
 The **useCallback** hook memoizes a function reference and returns the memoized function. It's useful when passing callbacks to child components to prevent unnecessary re-renders of those components. Here's an example:
 
 ```jsx
-  const ParentComponent = () => {
-    const handleClick = useCallback(() => {
-      // Handle click event
-    }, []);
+const ParentComponent = () => {
+  const handleClick = useCallback(() => {
+    // Handle click event
+  }, []);
 
-    return (
-      <ChildComponent onClick={handleClick} />
-    );
-  };
+  return <ChildComponent onClick={handleClick} />;
+};
 ```
 
 ## Context API <a name="s4-5"></a>
@@ -505,61 +498,63 @@ To optimize the performance of the Context API, consider the following tips:
 - **Limit provider scope**: Wrap only the necessary components with the context provider to minimize the number of components affected by context updates.
 
 ```jsx
-  import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo } from "react";
 
-  // Step 1: Create a small context value
-  const UserContext = createContext();
+// Step 1: Create a small context value
+const UserContext = createContext();
 
-  // Step 2: Create a provider component
-  const DisnerCharacterProvider = ({ children }) => {
-    // Simulating a large context value
-    const user = useMemo(() => ({
+// Step 2: Create a provider component
+const DisnerCharacterProvider = ({ children }) => {
+  // Simulating a large context value
+  const user = useMemo(
+    () => ({
       id: 1,
-      name: 'Mickey Mouse',
-      email: 'mickey.mousee@disney.com',
-      animation: 'Mickey Mouse Clubhouse'
+      name: "Mickey Mouse",
+      email: "mickey.mousee@disney.com",
+      animation: "Mickey Mouse Clubhouse",
       // ... other properties
-    }), []);
+    }),
+    []
+  );
 
-    return (
-      <UserContext.Provider value={user}>
-        {children}
-      </UserContext.Provider>
-    );
-  };
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+};
 
-  // Step 3: Create a consuming component
-  const UserInfo = () => {
-    // Step 4: Use useContext to access the context value
-    const user = useContext(UserContext);
+// Step 3: Create a consuming component
+const UserInfo = () => {
+  // Step 4: Use useContext to access the context value
+  const user = useContext(UserContext);
 
-    // Step 5: Memoize the component to prevent re-renders when context value doesn't change
-    return useMemo(() => (
+  // Step 5: Memoize the component to prevent re-renders when context value doesn't change
+  return useMemo(
+    () => (
       <div>
         <h2>User Info</h2>
         <p>Name: {user.name}</p>
         <p>Email: {user.email}</p>
         <p>It's from: {user.animation}</p>
       </div>
-    ), [user]);
-  };
+    ),
+    [user]
+  );
+};
 
-  // Step 6: Wrap necessary components with the context provider
-  const App = () => {
-    return (
-      <div>
-        <h1>My App</h1>
-        <DisnerCharacterProvider>
-          <div>
-            <h2>Disney Characters</h2>
-            <UserInfo />
-            {/* Other components that will need context */}
-          </div>
-        </DisnerCharacterProvider>
-        {/* Other components that won't need context */}
-      </div>
-    );
-  };
+// Step 6: Wrap necessary components with the context provider
+const App = () => {
+  return (
+    <div>
+      <h1>My App</h1>
+      <DisnerCharacterProvider>
+        <div>
+          <h2>Disney Characters</h2>
+          <UserInfo />
+          {/* Other components that will need context */}
+        </div>
+      </DisnerCharacterProvider>
+      {/* Other components that won't need context */}
+    </div>
+  );
+};
 ```
 
 ## use(Transition | DeferredValue) <a name="s4-6"></a>
@@ -571,26 +566,27 @@ In React 18, two new features have been introduced to improve the performance an
 The **useTransition** hook allows you to create smooth transitions during state updates, particularly useful for handling loading states and asynchronous operations. By using useTransition, you can control how long React should wait before displaying loading spinners or placeholders during state transitions.
 
 ```jsx
-  const App = () => {
-    const [isPending, startTransition] = useTransition();
-    const [data, setData] = useState(null);
+const App = () => {
+  const [isPending, startTransition] = useTransition();
+  const [data, setData] = useState(null);
 
-    const fetchData = () => {
-      startTransition(() => {
-        // Show loading spinner during the transition
-        const fetchedData = fetchDataFromServer();
-        setData(fetchedData);
-      });
-    };
-
-    return (
-      <div>
-        {isPending ? <LoadingSpinner /> : <DataComponent data={data} />}
-        <button onClick={fetchData}>Fetch Data</button>
-      </div>
-    );
+  const fetchData = () => {
+    startTransition(() => {
+      // Show loading spinner during the transition
+      const fetchedData = fetchDataFromServer();
+      setData(fetchedData);
+    });
   };
+
+  return (
+    <div>
+      {isPending ? <LoadingSpinner /> : <DataComponent data={data} />}
+      <button onClick={fetchData}>Fetch Data</button>
+    </div>
+  );
+};
 ```
+
 During the transition, the loading spinner will be displayed, improving the user experience.
 
 2. **useDeferedValue**
@@ -602,32 +598,34 @@ The primary use case for useDeferredValue is when you have a value that is not i
 Here's an example to illustrate the usage of useDeferredValue:
 
 ```jsx
-  import React, { useState, useDeferredValue } from 'react';
+import React, { useState, useDeferredValue } from "react";
 
-  const App = () => {
-    const [count, setCount] = useState(0);
-    const deferredCount = useDeferredValue(count, { timeoutMs: 1000 });
+const App = () => {
+  const [count, setCount] = useState(0);
+  const deferredCount = useDeferredValue(count, { timeoutMs: 1000 });
 
-    const increment = () => {
-      setCount(count => count + 1);
-    };
-
-    return (
-      <div>
-        <p>Count: {count}</p>
-        <p>Deferred Count: {deferredCount}</p>
-        <button onClick={increment}>Increment</button>
-      </div>
-    );
+  const increment = () => {
+    setCount((count) => count + 1);
   };
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>Deferred Count: {deferredCount}</p>
+      <button onClick={increment}>Increment</button>
+    </div>
+  );
+};
 ```
+
 Here:
-1. We have a state variable *count* that is incremented by clicking the "Increment" button.
-2. We use *useDeferredValue* to create a deferred value *deferredCount* based on the *count* state.
-3. The *timeoutMs* option is set to *1000 milliseconds (1 second)*, indicating that the update of *deferredCount* will be deferred for at least 1 second.
-4. The *count* is rendered immediately, while the *deferredCount* will reflect the value of *count* from the previous render cycle until the timeout elapses.
-5. This allows React to prioritize other updates before updating the *deferredCount*, preventing it from causing unnecessary rendering or blocking user interactions.
-5. By using *useDeferredValue*, you can optimize your components by deferring less critical updates, ensuring a smoother user experience and better performance by prioritizing more important updates.
+
+1. We have a state variable _count_ that is incremented by clicking the "Increment" button.
+2. We use _useDeferredValue_ to create a deferred value _deferredCount_ based on the _count_ state.
+3. The _timeoutMs_ option is set to _1000 milliseconds (1 second)_, indicating that the update of _deferredCount_ will be deferred for at least 1 second.
+4. The _count_ is rendered immediately, while the _deferredCount_ will reflect the value of _count_ from the previous render cycle until the timeout elapses.
+5. This allows React to prioritize other updates before updating the _deferredCount_, preventing it from causing unnecessary rendering or blocking user interactions.
+6. By using _useDeferredValue_, you can optimize your components by deferring less critical updates, ensuring a smoother user experience and better performance by prioritizing more important updates.
 
 ## Conclusion <a name="conclusion"></a>
 
@@ -653,15 +651,14 @@ With the knowledge gained from this definitive guide for React performance, you 
 
 ## About The Author <a name="about-the-author"></a>
 
-* Name: **Dálcio Garcia**
-* Role: **Front End Developer**
-* Github: [dalcio](https://github.com/dalcio)
-* Linkedin: [Dálcio Macuete Garcia](https://linkedin.com/in/dalcio-garcia)
-* Portfolio: [dalciogarcia](https://dalciogarcia.vercel.app)
+- Name: **Dálcio Garcia**
+- Role: **Front End Developer**
+- Github: [dalcio](https://github.com/dalcio)
+- Linkedin: [Dálcio Macuete Garcia](https://linkedin.com/in/dalcio-garcia)
+- Portfolio: [dalciogarcia](https://dalciogarcia.vercel.app)
 
 ## References <a name="references"></a>
 
 - [An Introduction to React Fiber - The Algorithm Behind React](https://www.velotio.com/engineering-blog/react-fiber-algorithm)
 - [What Is React Fiber? React.js Deep Dive #2](https://www.youtube.com/watch?v=0ympFIwQFJw)
 -
-`````
