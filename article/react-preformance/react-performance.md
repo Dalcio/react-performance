@@ -21,6 +21,8 @@ Estudando performance with react js
 - [Context API](#s4-5)
 - [use(Transition | DeferredValue)](#s4-6)
 - [Conclusion](#conclusion)
+- [About the Author](#about-the-author)
+- [References](#references)
 
 ## What is ReactJS? <a name="s0"></a>
 
@@ -46,7 +48,7 @@ Before diving into optimization techniques, it's essential to understand how to 
 **Performance Profiling**: React offers a built-in profiling API that enables you to measure the rendering time of components. By wrapping the desired component with the Profiler component, you can collect performance information and identify potential bottlenecks.[Profiling Performance of React Apps using React Profiler](https://blog.bitsrc.io/profiling-performance-of-react-apps-using-react-profiler-d02d77f3c96a)
 ![React Dev Tools](./react-profile.png)
 
-## How React Works? Why the things happen in react?
+## How React Works? Why the things happen in react? <a name="s2"></a>
 
 It's hard to optimize something in React if we doesn't know how React works, 'cause as I said perform in react means understanding how react works.
 
@@ -71,7 +73,7 @@ React's unidirectional data flow is another crucial aspect of how it works. Data
 
 By understanding how React works under the hood, you can make informed decisions about component structure, state management, and optimization techniques. And remember, that React's goal is to minimize unnecessary DOM manipulations, optimize rendering, and provide a smooth user experience.
 
-### What's Fiber and Keys? The Algorithm Behind React
+### What's Fiber and Keys? The Algorithm Behind React <a name="s2-1"></a>
 
 **Fiber reconciler** is the algorithm behind React, it provides greater flexibility and control over the rendering process. Fiber is responsible to organize the components into a tree structure and implements a priority-based algorithm to schedule and execute updates efficiently.
 
@@ -91,13 +93,13 @@ Here are some key features and benefits of React Fiber:
 
 **Note** that as a developer, you don't interact directly with React Fiber, but you benefit from its improved performance and concurrency features when using React.
 
-### Automatic Batching (New in React 18)
+### Automatic Batching (New in React 18) <a name="s2-2"></a>
 
 **Automatic batching** is a new feature introduced in React 18 that enhances performance by batching multiple state updates into a single render cycle, 'Cause in earlier versions of React, updating state multiple times within a single event handler or lifecycle method could lead to unnecessary re-renders. Automatic batching addresses this issue, resulting in improved performance and reduced rendering overhead.
 
 ![Automatic Batching](./Automatic_Batching.webp)
 
-### Find a Performance Issue Exercise
+### Find a Performance Issue Exercise <a name="s2-3"></a>
 
 To solve performance issues we should know at first where there are. Let's take a look at an exercise to find and address a performance problem:
 
@@ -150,7 +152,7 @@ export default Counter;
 
 To find perfermonce issues in React we can consider some points such:
 
-### Examples of Finding Performance Issues in React
+### Examples of Finding Performance Issues in React <a name="s2"></a>
 
 - **Inefficient rendering or excessive re-renders**: This occurs when components re-render more frequently than necessary, leading to unnecessary computational overhead. It can happen due to improper usage of React's lifecycle methods, incorrect dependencies in `useEffect` or `useMemo` hooks, or inefficient state management.
 
@@ -166,7 +168,7 @@ To find perfermonce issues in React we can consider some points such:
 
 These are just a few examples of performance issues you might encounter in React applications. It's crucial to profile, measure, and analyze your application's performance using appropriate tools and techniques to identify and address any bottlenecks or inefficiencies specific to your codebase.
 
-## React PureComponents
+## React PureComponents <a name="s3"></a>
 
 React provides a special component called **PureComponent** that implements a shallow prop and state comparison to determine whether a component needs to re-render. When using PureComponent, React automatically performs the shallow comparison and avoids re-rendering if the props and state remain the same.
 
@@ -205,7 +207,7 @@ const DisneyCharacter = memo((props) => {
 });
 ```
 
-## Minimizing Unnecessary Updates (Reducing Rerenders)
+## Minimizing Unnecessary Updates (Reducing Rerenders) <a name="s4"></a>
 
 To optimize React components further, it's crucial to minimize unnecessary updates and avoid re-rendering when it's not required. React provides several techniques to achieve this goal:
 
@@ -266,7 +268,7 @@ In this approach, the _useMemo_ hook is used to memoize the rendering of the com
 
 Both approaches allow you to optimize re-renders of functional components by implementing a custom comparison logic to determine whether the component should update. This enables you to achieve similar functionality as shouldComponentUpdate
 
-### Pushing State Down with Exercise
+### Pushing State Down with Exercise <a name="s4-1"></a>
 
 One of the issue about performance in react, are caused by the way that we structure our state.
 
@@ -332,7 +334,7 @@ const Counter = () => {
 
 By moving the state and the increment function to the _Counter_ component, we ensure that only the _Counter_ component re-renders when the state is updated, minimizing unnecessary re-renders in other components.
 
-### Pulling Content Up with Children
+### Pulling Content Up with Children <a name="s4-2"></a>
 
 Although React encourages component composition and reusability, sometimes components end up rendering static content that doesn't change between instances. In such cases, pulling the static content up to a parent component can optimize performance by reducing the number of unnecessary renders.
 
@@ -432,7 +434,7 @@ const Counter = ({counter, increment}) => {
 ```
 In this updated example, the static content is rendered once in the ParentComponent, eliminating unnecessary re-renders in the ChildComponent.
 
-### Shallow comparing
+### Shallow comparing <a name="s4-3"></a>
 
 Shallow comparing is a technique used to optimize React components by avoiding deep comparisons of props and state. Instead of performing deep equality checks, shallow comparing compares the references of objects or primitive values. This optimization can significantly reduce the overhead of comparisons, especially for large objects or arrays.
 
@@ -452,11 +454,11 @@ The following example, show shallow comparing with the *React.memo* HOC:
 ```
 In this example, the *DisneyCharacter* component can perform shallow comparing on the properties of the *data* object to determine if a re-render is necessary. By avoiding deep equality checks, the component can improve performance.
 
-### Memoization Hooks
+### Memoization Hooks <a name="s4-4"></a>
 
 Memoization hooks, such as **useMemo** and **useCallback**, are powerful tools for optimizing React components by memoizing expensive calculations or functions. These hooks allow you to cache and reuse the results of calculations or function references, avoiding redundant computations and re-renders.
 
-1. **useMemo**
+1. **useMemo** <a name="s4-4-1"></a>
 
 The **useMemo** hook memoizes the result of a computation and returns the cached value on subsequent renders. It takes a dependency array as the second argument to determine when to recalculate the memoized value. Here's an example:
 
@@ -476,7 +478,7 @@ The **useMemo** hook memoizes the result of a computation and returns the cached
   };
 ```
 
-2. **useCallback**
+2. **useCallback** <a name="s4-4-2"></a>
 
 The **useCallback** hook memoizes a function reference and returns the memoized function. It's useful when passing callbacks to child components to prevent unnecessary re-renders of those components. Here's an example:
 
@@ -492,7 +494,7 @@ The **useCallback** hook memoizes a function reference and returns the memoized 
   };
 ```
 
-## Context API
+## Context API <a name="s4-5"></a>
 
 The Context API in React provides a way to share data between components without passing props manually at each level. While the Context API offers convenience, it's essential to be mindful of its impact on performance. Large context providers or frequent updates to context values can cause unnecessary re-renders in consuming components.
 
@@ -560,7 +562,7 @@ To optimize the performance of the Context API, consider the following tips:
   };
 ```
 
-## use(Transition | DeferredValue)
+## use(Transition | DeferredValue) <a name="s4-6"></a>
 
 In React 18, two new features have been introduced to improve the performance and user experience of asynchronous rendering: **useTransition** and **useDeferedValue**
 
@@ -627,9 +629,7 @@ Here:
 5. This allows React to prioritize other updates before updating the *deferredCount*, preventing it from causing unnecessary rendering or blocking user interactions.
 5. By using *useDeferredValue*, you can optimize your components by deferring less critical updates, ensuring a smoother user experience and better performance by prioritizing more important updates.
 
-## Conclusion
-
-## Conclusion
+## Conclusion <a name="conclusion"></a>
 
 In this comprehensive guide, we have explored various techniques and best practices for optimizing the performance of React applications. We started by understanding how to check the performance state of a React app, enabling us to identify areas that need improvement.
 
@@ -651,9 +651,15 @@ Remember, each optimization technique has its own considerations, caveats, and t
 
 With the knowledge gained from this definitive guide for React performance, you are now equipped to tackle performance challenges head-on and create exceptional React applications that deliver optimal performance at scale.
 
-## About The Author
+## About The Author <a name="about-the-author"></a>
 
-## **References**
+* Name: **Dálcio Garcia**
+* Role: **Front End Developer**
+* Github: [dalcio](https://github.com/dalcio)
+* Linkedin: [Dálcio Macuete Garcia](https://linkedin.com/in/dalcio-garcia)
+* Portfolio: [dalciogarcia](https://dalciogarcia.vercel.app)
+
+## References <a name="references"></a>
 
 - [An Introduction to React Fiber - The Algorithm Behind React](https://www.velotio.com/engineering-blog/react-fiber-algorithm)
 - [What Is React Fiber? React.js Deep Dive #2](https://www.youtube.com/watch?v=0ympFIwQFJw)
