@@ -1,4 +1,11 @@
-# React Js: The definitive guide for performance
+https://www.youtube.com/watch?v=MJn5_uU10xc
+https://www.youtube.com/watch?v=PnmA3tWKlaA
+
+
+🚀 Prepare-se enquanto lhe mostro como seus projetos web a novos patamares. Seja para interações perfeitas, tempos de resposta ultra-rápidos ou simplesmente uma imersão profunda no mundo dinâmico do React, este artigo tem tudo para você.
+
+
+# Unleash the Power of React JS: Effortless Performance Boost and Insider Tips
 
 Estudando performance with react js
 
@@ -602,7 +609,7 @@ import React, { useState, useDeferredValue } from "react";
 
 const App = () => {
   const [count, setCount] = useState(0);
-  const deferredCount = useDeferredValue(count, { timeoutMs: 1000 });
+  const deferredCount = useDeferredValue(count);
 
   const increment = () => {
     setCount((count) => count + 1);
