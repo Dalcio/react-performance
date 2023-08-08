@@ -137,7 +137,11 @@ const Counter = () => {
   const increment = useCallback(() => {
     // Addition ➕
     setCount((prevCount) => prevCount + 1); // correct ✔️✅
-  }, []); /* By using useCallback with an empty dependency array, we ensure that the increment function is memoized and remains the same across renders as long as its dependencies don't change. This optimization eliminates unnecessary function recreations and improves the performance of the component.*/
+  }, []); /* By using useCallback with an empty dependency array,
+ we ensure that the increment function is memoized and remains
+  the same across renders as long as its dependencies don't change.
+ This optimization eliminates unnecessary function recreations and
+ improves the performance of the component.*/
 
   return (
     <div>
